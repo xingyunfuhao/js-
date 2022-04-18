@@ -16,6 +16,22 @@ function deepClone(obj,hash=new WeakMap()){
     return cloneObj;
 }
 
+function clone(target,map=new Map()){
+    if(typeof target === 'object'){
+        const isArray= Array.isArray(target);
+        let cloneTarget=isArray?[]:{};
+        if(map.get(target)){
+            return map.get(target)
+        }
+        map.set(target,cloneTarget)
+        for(const key in target){
+            cloneTarget[key]=clone(target[key],map)
+        }
+        return cloneTarget
+    }else{
+        return target
+    }
+}
 
 let obj = { name: 1, address: { x: 100 } };
 obj.o = obj; // 对象存在循环引用的情况
